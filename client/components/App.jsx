@@ -5,8 +5,8 @@ import Main from './Main.jsx';
 
 const PAGES = {
   '/': Main,
-  '/questions': Questions,
-  '/login': Login
+  '/login': Login,
+  '/questions': Questions
 };
 
 class App extends React.Component {
@@ -16,9 +16,16 @@ class App extends React.Component {
     this.state = {};
   }
 
+  clickHandler(e) {
+    console.log('hey');
+    e.preventDefault();
+    window.history.pushState('object or string', 'Title', '/questions');
+  }
+
   render() {
     return (
       <div id="wrapper">
+        <a onClick={this.clickHandler}>click me</a>
         <Login />
       </div>
     );

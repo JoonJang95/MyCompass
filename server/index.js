@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
+const { renderToString } = require('react-dom/server');
 const router = require('./routes.js');
 const db = require('../database/index.js');
 
