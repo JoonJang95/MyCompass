@@ -5,7 +5,7 @@ const Dotenv = require('dotenv-webpack');
 module.exports = {
   entry: './client/index.jsx',
   output: {
-    filename: 'app.bundle.js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, './public')
   },
   module: {
@@ -22,7 +22,7 @@ module.exports = {
       }
     ]
   },
-  plugins: [new webpack.optimize.ModuleConcatenationPlugin()],
+  plugins: [new webpack.optimize.ModuleConcatenationPlugin(), new Dotenv()],
   node: {
     fs: 'empty'
   }

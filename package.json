@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./server/index.js"
+    "start": "nodemon server/index.js",
+    "build": "webpack -d -w"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,11 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "dotenv-webpack": "^1.7.0",
     "express": "^4.16.4",
+    "mongoose": "^5.4.7",
+    "mongoose-explain": "^0.2.2",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.9",
     "react": "^16.7.0",

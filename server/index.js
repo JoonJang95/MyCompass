@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const router = require('./routes.js');
+const db = require('../database/index.js');
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 //Middelware-Router
 app.use(router);
 
-const port = process.env.PORT || 9100;
+const port = process.env.PORT || 9000;
 
 app.listen(port, () => {
   console.log(`Server is now listening on port ${port}`);
