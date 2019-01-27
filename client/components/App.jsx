@@ -25,7 +25,6 @@ class App extends React.Component {
   render() {
     return (
       <div id="wrapper">
-        <a onClick={this.clickHandler}>click me</a>
         <Login />
       </div>
     );
