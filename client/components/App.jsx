@@ -1,7 +1,7 @@
 import React from 'react';
 import Login from './Login.jsx';
 import Questions from './Questions.jsx';
-import RecommendationsMap from './RecommendationsMap.jsx';
+import Map from './Map.jsx';
 import Recommendations from './Recommendations.jsx';
 
 class App extends React.Component {
@@ -46,7 +46,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <RecommendationsMap />
+        <Map />
       </div>
     );
   }
