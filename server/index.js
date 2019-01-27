@@ -3,8 +3,10 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
+const https = require('https');
+const fs = require('fs');
 const router = require('./routes.js');
-const db = require('../database/index.js');
+// const db = require('../database/index.js');
 
 const app = express();
 
@@ -15,13 +17,21 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/:id', express.static(path.join(__dirname, '../public/')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 //Middelware-Router
 app.use(router);
 
 const port = process.env.PORT || 9000;
 
-app.listen(port, () => {
-  console.log(`Server is now listening on port ${port}`);
-});
+https
+  .createServer(
+    {
+      key: fs.readFileSync('server.key'),
+      cert: fs.readFileSync('server.crt')
+    },
+    app
+  )
+  .listen(port, () => {
+    console.log(`Server is now listening on port ${port}`);
+  });
