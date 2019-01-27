@@ -29,14 +29,4 @@ var usersSchema = mongoose.Schema({
 
 // var Item = mongoose.model('Item', itemSchema);
 
-var selectAll = function(callback) {
-  Item.find({}, function(err, items) {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, items);
-    }
-  });
-};
-
-module.exports.selectAll = selectAll;
+module.exports = db;

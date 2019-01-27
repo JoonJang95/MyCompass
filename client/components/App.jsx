@@ -1,13 +1,7 @@
 import React from 'react';
-import Login from './Login.jsx';
-import Questions from './Questions.jsx';
-import Main from './Main.jsx';
-
-const PAGES = {
-  '/': Main,
-  '/login': Login,
-  '/questions': Questions
-};
+// import Login from './Login.jsx';
+// import Questions from './Questions.jsx';
+// import Main from './Main.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -16,15 +10,9 @@ class App extends React.Component {
     this.state = {};
   }
 
-  clickHandler(e) {
-    console.log('hey');
-    e.preventDefault();
-    window.history.pushState('object or string', 'Title', '/questions');
-  }
-
   render() {
     return (
-      <div id="wrapper">
+      <div>
         <Login />
       </div>
     );
