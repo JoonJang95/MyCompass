@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Login from './Login.jsx';
-import Map from './Map.jsx';
+// import Map from './Map.jsx';
 import Sidebar from './Sidebar.jsx';
 import { FourSquareID, FourSquareSecret } from '../../envConfigs.js';
 
@@ -16,6 +16,9 @@ class App extends React.Component {
       lookingFor: 'food',
       recommendations: []
     };
+
+    this.getNearbyRecommendations = this.getNearbyRecommendations.bind(this);
+    this.searchArea = this.searchArea.bind(this);
   }
 
   componentDidMount() {
@@ -56,23 +59,48 @@ class App extends React.Component {
       .get(endPoint + new URLSearchParams(parameters))
       .then(({ data }) => {
         const { results } = data.response.group;
-        this.setState({
-          recommendations: results
-        });
+        this.setState(
+          {
+            recommendations: results
+          },
+          () => {
+            console.log(this.state.recommendations);
+          }
+        );
       })
       .catch(err => {
         console.log('error with get nearby recommendations request: ', err);
       });
   }
 
+  searchArea(e) {
+    e.preventDefault();
+
+    const searchValue = e.target.value;
+    console.log('search called with:', searchValue);
+
+    this.setState(
+      {
+        lookingFor: searchValue
+      },
+      () => {
+        console.log('invoking 4Square API');
+        this.getNearbyRecommendations();
+      }
+    );
+  }
+
   render() {
     return (
       <div className="AppWrapper">
-        <Sidebar />
-        <Map location={this.state} />
+        <Sidebar searchFunc={this.searchArea} />
       </div>
     );
   }
+}
+
+{
+  /* <Map location={this.state} /> */
 }
 
 export default App;
