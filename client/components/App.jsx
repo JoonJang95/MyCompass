@@ -110,8 +110,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="AppWrapper">
-        <Sidebar searchFunc={this.searchArea} />
         <Map {...this.state} />
+        <Sidebar searchFunc={this.searchArea} />
       </div>
     );
   }

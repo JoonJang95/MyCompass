@@ -27,17 +27,11 @@ class Map extends React.Component {
     if (this.props.geoJSONStore.length > 0) {
       console.log('adding Marks!');
       this.props.geoJSONStore.forEach(location => {
-        console.log('add', marker);
         let marker = new MapboxGL.Marker()
           .setLngLat(location.coordinates)
           .addTo(this.map);
       });
     }
-  }
-
-  removeMarkers() {
-    console.log(marker);
-    // this.marker.remove();
   }
 
   componentWillUnmount() {
@@ -53,7 +47,6 @@ class Map extends React.Component {
             this.container = ele;
           }}
         />
-        <div onClick={this.removeMarkers}>click me</div>
       </React.Fragment>
     );
   }
