@@ -13,6 +13,7 @@ class App extends React.Component {
       longitude: -73.968285,
       latitude: 40.785091,
       gpsAccuracy: 30,
+      currentSearch: '',
       geoJSONStore: []
     };
 
@@ -86,10 +87,16 @@ class App extends React.Component {
 
         this.setState(
           {
-            geoJSONStore: geoJSONStore
+            geoJSONStore: geoJSONStore,
+            currentSearch: searchValue
           },
           () => {
-            console.log('obtained nearby data', this.state.geoJSONStore);
+            console.log(
+              'obtained nearby data',
+              this.state.geoJSONStore,
+              'search',
+              this.state.currentSearch
+            );
           }
         );
       })
