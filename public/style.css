@@ -64,3 +64,22 @@ body {
   text-align: center;
   margin-bottom: 0px;
 }
+
+/* Sidebar */
+
+.sidebar {
+  width: 250px;
+  height: 548px;
+  border: 1px solid #c4c4c4;
+}
+
+/* Map */
+
+.map {
+  position: absolute;
+  left: 250px;
+  width: 700px;
+  height: 550px;
+  top: 8.25px;
+  bottom: 0;
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Login from './Login.jsx';
 import Map from './Map.jsx';
+import Sidebar from './Sidebar.jsx';
 import { FourSquareID, FourSquareSecret } from '../../envConfigs.js';
 
 class App extends React.Component {
@@ -24,16 +25,11 @@ class App extends React.Component {
   getLocation() {
     navigator.geolocation.getCurrentPosition(
       pos => {
-        this.setState(
-          {
-            longitude: pos.coords.longitude,
-            latitude: pos.coords.latitude,
-            gpsAccuracy: pos.coords.accuracy
-          },
-          () => {
-            this.getNearbyRecommendations();
-          }
-        );
+        this.setState({
+          longitude: pos.coords.longitude,
+          latitude: pos.coords.latitude,
+          gpsAccuracy: pos.coords.accuracy
+        });
       },
       err => {
         console.log('Could not get current location: ', err);
@@ -60,15 +56,9 @@ class App extends React.Component {
       .get(endPoint + new URLSearchParams(parameters))
       .then(({ data }) => {
         const { results } = data.response.group;
-        console.log('data from 4square', results);
-        this.setState(
-          {
-            recommendations: results
-          },
-          () => {
-            console.log('new state rec', this.state.recommendations);
-          }
-        );
+        this.setState({
+          recommendations: results
+        });
       })
       .catch(err => {
         console.log('error with get nearby recommendations request: ', err);
@@ -77,7 +67,8 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="MapWrapper">
+      <div className="AppWrapper">
+        <Sidebar />
         <Map location={this.state} />
       </div>
     );
