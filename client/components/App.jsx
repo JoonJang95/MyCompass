@@ -17,6 +17,7 @@ class App extends React.Component {
       recommendations: []
     };
 
+    this.getLocation = this.getLocation.bind(this);
     this.getNearbyRecommendations = this.getNearbyRecommendations.bind(this);
     this.searchArea = this.searchArea.bind(this);
   }
@@ -42,7 +43,6 @@ class App extends React.Component {
   }
 
   getNearbyRecommendations() {
-    console.log('new hey call');
     const endPoint = 'https://api.foursquare.com/v2/search/recommendations?';
     const parameters = {
       client_id: FourSquareID,
@@ -59,14 +59,46 @@ class App extends React.Component {
       .get(endPoint + new URLSearchParams(parameters))
       .then(({ data }) => {
         const { results } = data.response.group;
-        this.setState(
-          {
-            recommendations: results
-          },
-          () => {
-            console.log(this.state.recommendations);
+        console.log(results);
+        const geoJSONStore = [];
+
+        results.forEach(result => {
+          console.log(result);
+          let photo = 'no photo';
+          let text = 'no description';
+
+          if (Object.keys(result.snippets.items[0]).length !== 0) {
+            console.log('text called');
+            text = result.snippets.items[0].detail.object.text;
           }
-        );
+
+          if (result.photo) {
+            console.log('photo called');
+            let prefix = result.photo.prefix;
+            let size = `${result.photo.height}x${result.photo.width}`;
+            let suffix = result.photo.suffix;
+
+            photo = `${prefix}${size}${suffix}`;
+          }
+
+          geoJSONStore.push({
+            coordinates: [result.venue.location.lng, result.venue.location.lat],
+            name: result.venue.name,
+            text: text,
+            photo: photo
+          });
+          console.log('end of this round');
+        });
+
+        console.log('state obj', geoJSONStore);
+        // this.setState(
+        //   {
+        //     recommendations: results
+        //   },
+        //   () => {
+        //     console.log('obtained nearby data', this.state.recommendations);
+        //   }
+        // );
       })
       .catch(err => {
         console.log('error with get nearby recommendations request: ', err);
