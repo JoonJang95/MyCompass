@@ -1,7 +1,6 @@
 import React from 'react';
 import Login from './Login.jsx';
 import Map from './Map.jsx';
-import Recommendations from './Recommendations.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,12 +17,17 @@ class App extends React.Component {
   }
 
   getLocation() {
-    navigator.geolocation.getCurrentPosition(pos => {
-      this.setState({
-        longitude: pos.coords.longitude,
-        latitude: pos.coords.latitude
-      });
-    });
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        this.setState({
+          longitude: pos.coords.longitude,
+          latitude: pos.coords.latitude
+        });
+      },
+      err => {
+        console.log('Could not get current location: ', err);
+      }
+    );
   }
 
   render() {
