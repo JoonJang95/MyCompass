@@ -91,12 +91,7 @@ class App extends React.Component {
             currentSearch: searchValue
           },
           () => {
-            console.log(
-              'obtained nearby data',
-              this.state.geoJSONStore,
-              'search',
-              this.state.currentSearch
-            );
+            console.log('obtained nearby data', this.state.geoJSONStore);
           }
         );
       })
@@ -117,7 +112,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="AppWrapper">
-        <Map {...this.state} />
+        <Map {...this.state} saveMarkers={this.saveCurrentMarkers} />
         <Sidebar searchFunc={this.searchArea} />
       </div>
     );

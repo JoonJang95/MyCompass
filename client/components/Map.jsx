@@ -5,10 +5,17 @@ const { MB_APIKEY } = require('../../envConfigs.js');
 class Map extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      mapMarkers: []
+    };
+
+    this.saveCurrentMarkers = this.saveCurrentMarkers.bind(this);
+    this.deleteCurrentMarkers = this.deleteCurrentMarkers.bind(this);
   }
 
   componentDidUpdate(prevProps) {
-    console.log('Location found, displaying map');
+    console.log('map component updating');
     if (
       prevProps.longitude !== this.props.longitude ||
       prevProps.latitude !== this.props.latitude
@@ -22,15 +29,26 @@ class Map extends React.Component {
         center: [longitude, latitude],
         zoom: 12
       });
+
+      console.log('displaying new Map');
     }
 
-    if (this.props.geoJSONStore.length > 0) {
-      console.log('adding Marks!');
-      this.props.geoJSONStore.forEach(location => {
+    if (prevProps.currentSearch !== this.props.currentSearch) {
+      if (this.state.mapMarkers.length > 0) {
+        console.log('there were old markers, so will remove them');
+        this.deleteCurrentMarkers(this.state.mapMarkers);
+      }
+      console.log('adding new Marks!');
+      let markerList = [];
+      this.props.geoJSONStore.forEach((location, index) => {
         let marker = new MapboxGL.Marker()
           .setLngLat(location.coordinates)
           .addTo(this.map);
+
+        markerList.push(marker);
       });
+
+      this.saveCurrentMarkers(markerList);
     }
   }
 
@@ -38,16 +56,33 @@ class Map extends React.Component {
     this.map.remove();
   }
 
+  saveCurrentMarkers(markers) {
+    console.log('saving Markers!');
+    this.setState(
+      {
+        mapMarkers: markers
+      },
+      () => {
+        console.log('saved markers', this.state.mapMarkers);
+      }
+    );
+  }
+
+  deleteCurrentMarkers(markers) {
+    markers.forEach(marker => {
+      marker.remove();
+    });
+    console.log('removed markers');
+  }
+
   render() {
     return (
-      <React.Fragment>
-        <div
-          className="map"
-          ref={ele => {
-            this.container = ele;
-          }}
-        />
-      </React.Fragment>
+      <div
+        className="map"
+        ref={ele => {
+          this.container = ele;
+        }}
+      />
     );
   }
 }
