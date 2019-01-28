@@ -20,15 +20,15 @@ class Map extends React.Component {
         container: this.container,
         style: 'mapbox://styles/mapbox/streets-v10',
         center: [longitude, latitude],
-        zoom: 11
+        zoom: 12
       });
     }
 
     if (this.props.geoJSONStore.length > 0) {
       console.log('adding Marks!');
       this.props.geoJSONStore.forEach(location => {
-        console.log('add', this.marker);
-        this.marker = new MapboxGL.Marker()
+        console.log('add', marker);
+        let marker = new MapboxGL.Marker()
           .setLngLat(location.coordinates)
           .addTo(this.map);
       });
@@ -36,7 +36,7 @@ class Map extends React.Component {
   }
 
   removeMarkers() {
-    console.log(this.marker);
+    console.log(marker);
     // this.marker.remove();
   }
 
