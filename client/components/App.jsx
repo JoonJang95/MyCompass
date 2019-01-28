@@ -7,17 +7,29 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      longitude: -73.968285,
+      latitude: 40.785091
+    };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.getLocation();
+  }
 
-  componentWillUnmount() {}
+  getLocation() {
+    navigator.geolocation.getCurrentPosition(pos => {
+      this.setState({
+        longitude: pos.coords.longitude,
+        latitude: pos.coords.latitude
+      });
+    });
+  }
 
   render() {
     return (
-      <div>
-        <Map />
+      <div className="MapWrapper">
+        <Map location={this.state} />
       </div>
     );
   }

@@ -3,6 +3,5 @@ dotenv.config();
 
 module.exports = {
   MB_APIKEY: process.env.MBAPI_KEY,
-  PORT: process.env.PORT,
-  MB_STYLE: process.env.MB_STYLE
+  PORT: process.env.PORT
 };

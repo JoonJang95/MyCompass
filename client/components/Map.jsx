@@ -1,21 +1,28 @@
 import React from 'react';
 import MapboxGL from 'mapbox-gl';
-const { MB_APIKEY, MB_STYLE } = require('../../envConfigs.js');
+const { MB_APIKEY } = require('../../envConfigs.js');
 
 class Map extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {
-    MapboxGL.accessToken = MB_APIKEY;
+  componentDidUpdate(prevProps) {
+    console.log('Location found, displaying map');
+    if (
+      prevProps.location.longitude !== this.props.location.longitude ||
+      prevProps.location.latitude !== this.props.location.latitude
+    ) {
+      MapboxGL.accessToken = MB_APIKEY;
+      const { longitude, latitude } = this.props.location;
 
-    this.map = new MapboxGL.Map({
-      container: this.container,
-      style: MB_STYLE,
-      center: [-73.968285, 40.785091],
-      zoom: 12
-    });
+      this.map = new MapboxGL.Map({
+        container: this.container,
+        style: 'mapbox://styles/mapbox/streets-v10',
+        center: [longitude, latitude],
+        zoom: 12
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -28,7 +35,7 @@ class Map extends React.Component {
       top: 0,
       bottom: 0,
       width: '700px',
-      height: '500px'
+      height: '400px'
     };
 
     return (
