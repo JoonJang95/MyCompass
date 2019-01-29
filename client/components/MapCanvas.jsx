@@ -10,8 +10,6 @@ class MapCanvas extends React.Component {
       mapMarkers: []
     };
 
-    this.mapMarkers = [];
-
     this.saveCurrentMarkers = this.saveCurrentMarkers.bind(this);
     this.deleteCurrentMarkers = this.deleteCurrentMarkers.bind(this);
   }
@@ -47,9 +45,9 @@ class MapCanvas extends React.Component {
 
     // Add Markers w/ popups
     if (prevProps.currentSearch !== this.props.currentSearch) {
-      if (this.mapMarkers.length > 0) {
+      if (this.state.mapMarkers.length > 0) {
         console.log('there were old markers, so will remove them');
-        this.deleteCurrentMarkers(this.mapMarkers);
+        this.deleteCurrentMarkers(this.state.mapMarkers);
       }
       console.log('adding new Marks!');
       let markerList = [];
@@ -79,17 +77,15 @@ class MapCanvas extends React.Component {
   }
 
   saveCurrentMarkers(markers) {
-    this.mapMarkers = markers;
-    console.log('saved markers', this.mapMarkers);
-    // console.log('saving Markers!');
-    // this.setState(
-    //   {
-    //     mapMarkers: markers
-    //   },
-    //   () => {
-    //     console.log('saved markers', this.state.mapMarkers);
-    //   }
-    // );
+    console.log('saving Markers!');
+    this.setState(
+      {
+        mapMarkers: markers
+      },
+      () => {
+        console.log('saved markers', this.state.mapMarkers);
+      }
+    );
   }
 
   deleteCurrentMarkers(markers) {
