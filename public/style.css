@@ -133,3 +133,13 @@ body {
   bottom: 0;
   border: 1px solid #c4c4c4;
 }
+
+.popupWrapper {
+  width: 160px;
+  font-family: Helvetica, sans-serif;
+  word-wrap: break-word;
+}
+
+.mapboxgl-popup {
+  max-width: 190px;
+}

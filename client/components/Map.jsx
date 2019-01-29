@@ -33,6 +33,7 @@ class Map extends React.Component {
       console.log('displaying new Map');
     }
 
+    // Add Markers w/ popups
     if (prevProps.currentSearch !== this.props.currentSearch) {
       if (this.state.mapMarkers.length > 0) {
         console.log('there were old markers, so will remove them');
@@ -40,9 +41,18 @@ class Map extends React.Component {
       }
       console.log('adding new Marks!');
       let markerList = [];
-      this.props.geoJSONStore.forEach((location, index) => {
+      this.props.geoJSONStore.forEach(location => {
+        let popup = new MapboxGL.Popup().setHTML(
+          `<div class="popupWrapper"><img src=${
+            location.photo
+          } alt="photo not available" height="100" width="145"><h3>${
+            location.name
+          }</h3><p class="popupText">${location.text}</p></div>`
+        );
+
         let marker = new MapboxGL.Marker()
           .setLngLat(location.coordinates)
+          .setPopup(popup)
           .addTo(this.map);
 
         markerList.push(marker);
