@@ -30,6 +30,15 @@ class Map extends React.Component {
         zoom: 12
       });
 
+      // Add Current Position
+
+      let ele = document.createElement('div');
+      ele.className = 'currentPositionMarker';
+
+      let userLocation = new MapboxGL.Marker(ele)
+        .setLngLat([longitude, latitude])
+        .addTo(this.map);
+
       console.log('displaying new Map');
     }
 

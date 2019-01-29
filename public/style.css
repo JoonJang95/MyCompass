@@ -124,6 +124,15 @@ body {
 
 /* Map */
 
+.currentPositionMarker {
+  border: none;
+  cursor: pointer;
+  height: 43px;
+  width: 43px;
+  background-image: url(https://img.icons8.com/color/43/000000/user-location.png);
+  background-color: rgba(0, 0, 0, 0);
+}
+
 .map {
   position: absolute;
   left: 250px;
