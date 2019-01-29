@@ -1,8 +1,11 @@
 import React from 'react';
 import axios from 'axios';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Login from './Login.jsx';
 import Map from './Map.jsx';
 import Sidebar from './Sidebar.jsx';
+import Error from './Error.jsx';
+import auth from './Auth.js';
 import { FourSquareID, FourSquareSecret } from '../../envConfigs.js';
 
 class App extends React.Component {
@@ -111,12 +114,44 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="AppWrapper">
-        <Map {...this.state} saveMarkers={this.saveCurrentMarkers} />
-        <Sidebar searchFunc={this.searchArea} />
-      </div>
+      <BrowserRouter>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={props => {
+              if (auth.isAuthenticated()) {
+                return (
+                  <div className="AppWrapper">
+                    <Map
+                      {...this.state}
+                      saveMarkers={this.saveCurrentMarkers}
+                    />
+                    <Sidebar searchFunc={this.searchArea} />
+                  </div>
+                );
+              } else {
+                return (
+                  <Redirect
+                    to={{
+                      pathname: 'login',
+                      state: {
+                        from: props.location
+                      }
+                    }}
+                  />
+                );
+              }
+            }}
+          />
+          <Route exact path="/login" component={Login} />
+          <Route component={Error} />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
+
+//trying out react router (this marks the spot before implementing router);
 
 export default App;
