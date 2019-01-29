@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Login from './Login.jsx';
-import Map from './Map.jsx';
+import MapCanvas from './MapCanvas.jsx';
 import Sidebar from './Sidebar.jsx';
 import Error from './Error.jsx';
 import auth from './Auth.js';
@@ -17,12 +17,14 @@ class App extends React.Component {
       latitude: 40.785091,
       gpsAccuracy: 30,
       currentSearch: '',
-      geoJSONStore: []
+      geoJSONStore: [],
+      currentUser: ''
     };
 
     this.getLocation = this.getLocation.bind(this);
     this.getNearbyRecommendations = this.getNearbyRecommendations.bind(this);
     this.searchArea = this.searchArea.bind(this);
+    this.setCurrentUser = this.setCurrentUser.bind(this);
   }
 
   componentDidMount() {
@@ -30,8 +32,10 @@ class App extends React.Component {
   }
 
   getLocation() {
+    console.log('getting current position');
     navigator.geolocation.getCurrentPosition(
       pos => {
+        console.log(pos);
         this.setState({
           longitude: pos.coords.longitude,
           latitude: pos.coords.latitude,
@@ -112,6 +116,12 @@ class App extends React.Component {
     this.getNearbyRecommendations(searchValue);
   }
 
+  setCurrentUser(user) {
+    this.setState({
+      currentUser: user
+    });
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -123,7 +133,7 @@ class App extends React.Component {
               if (auth.isAuthenticated()) {
                 return (
                   <div className="AppWrapper">
-                    <Map
+                    <MapCanvas
                       {...this.state}
                       saveMarkers={this.saveCurrentMarkers}
                     />
@@ -144,7 +154,17 @@ class App extends React.Component {
               }
             }}
           />
-          <Route exact path="/login" component={Login} />
+          <Route
+            exact
+            path="/login"
+            render={props => (
+              <Login
+                {...props}
+                setUser={this.setCurrentUser}
+                getLocation={this.getLocation}
+              />
+            )}
+          />
           <Route component={Error} />
         </Switch>
       </BrowserRouter>

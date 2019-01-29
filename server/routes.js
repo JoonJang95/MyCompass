@@ -7,8 +7,10 @@ router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-router.post('/');
-router.put('/');
+// Login API routes
+router.post('/login', controller.checkLogin);
+
+router.post('/signup');
 router.delete('/');
 
 module.exports = router;

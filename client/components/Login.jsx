@@ -27,17 +27,28 @@ class Login extends React.Component {
         username: this.state.username,
         password: this.state.password
       })
-      .then(({ data }) => {
-        if (results.data.valid) {
-          auth.login(() => {
-            props.history.push('/');
-          });
-        } else {
-          alert('Wrong Username or Password');
+      .then(results => {
+        let { isValid } = results.data;
+        switch (true) {
+          case isValid === 404:
+            alert('username does not exist');
+            break;
+          case isValid:
+            auth.login(() => {
+              console.log('redirecting');
+              this.props.history.push('/');
+              console.log('setting current user');
+              this.props.setUser(this.state.username);
+              // console.log('getting location');
+              // this.props.getLocation();
+            });
+            break;
+          default:
+            alert('Wrong Username or Password');
         }
       })
       .catch(err => {
-        console.log('error checking credentials: ', err);
+        console.log('error submitting credentials: ', err);
       });
   }
 
@@ -63,6 +74,11 @@ class Login extends React.Component {
           <button
             onClick={e => {
               e.preventDefault();
+              if (!this.state.username || !this.state.password) {
+                alert('Please fill out both username & password');
+              } else {
+                this.submitLogin();
+              }
             }}
             className="login-button"
           >

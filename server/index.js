@@ -6,7 +6,6 @@ const morgan = require('morgan');
 const https = require('https');
 const fs = require('fs');
 const router = require('./routes.js');
-// const db = require('../database/index.js');
 
 const app = express();
 

@@ -3,7 +3,7 @@ const explain = require('mongoose-explain');
 
 mongoose.connect(
   'mongodb://localhost/MyCompass',
-  { useNewUrlParser: true, useCreateIndex: true, autoIndex: false }
+  { useNewUrlParser: true, useCreateIndex: true }
 );
 
 var db = mongoose.connection;
@@ -19,14 +19,16 @@ db.once('open', function() {
 // define schema
 
 var usersSchema = mongoose.Schema({
-  _id: {
-    type: Number,
-    index: true
+  username: {
+    type: String,
+    required: [true, 'username required'],
+    unique: true
   },
-  username: String,
-  password: String
+  password: { type: String, required: [true, 'password required'] }
 });
 
-// var Item = mongoose.model('Item', itemSchema);
+// define models
 
-module.exports = db;
+var Users = mongoose.model('users', usersSchema);
+
+module.exports = { Users };

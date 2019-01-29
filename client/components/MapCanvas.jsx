@@ -2,7 +2,7 @@ import React from 'react';
 import MapboxGL from 'mapbox-gl';
 const { MB_APIKEY } = require('../../envConfigs.js');
 
-class Map extends React.Component {
+class MapCanvas extends React.Component {
   constructor(props) {
     super(props);
 
@@ -16,10 +16,9 @@ class Map extends React.Component {
 
   componentDidUpdate(prevProps) {
     console.log('map component updating');
-    if (
-      prevProps.longitude !== this.props.longitude ||
-      prevProps.latitude !== this.props.latitude
-    ) {
+    console.log(prevProps.currentUser, this.props.currentUser);
+    if (prevProps.currentUser !== this.props.currentUser) {
+      console.log('creating new map');
       MapboxGL.accessToken = MB_APIKEY;
       const { longitude, latitude } = this.props;
 
@@ -106,4 +105,4 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+export default MapCanvas;
