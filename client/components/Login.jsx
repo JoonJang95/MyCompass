@@ -37,10 +37,11 @@ class Login extends React.Component {
             auth.login(() => {
               console.log('redirecting');
               this.props.history.push('/');
-              console.log('setting current user');
               this.props.setUser(this.state.username);
-              // console.log('getting location');
-              // this.props.getLocation();
+              // if (this.props.gotLocation) {
+              //   console.log('updating current user');
+              //   this.props.setUser(this.state.username);
+              // }
             });
             break;
           default:

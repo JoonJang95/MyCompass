@@ -1,10 +1,12 @@
 import React from 'react';
 
-const Sidebar = ({ searchFunc }) => {
+const Sidebar = ({ searchFunc, currUser }) => {
   return (
     <div className="sidebar">
       <h2 className="sidebarHeader">MyCompass</h2>
-      <div className="sidebarText">Hello, {'<Username>'}</div>
+      <div className="sidebarText">
+        Hello, <span className="sidebarUsername">{currUser}</span>
+      </div>
       <br />
       <div className="sidebarText">What are you looking for today?</div>
       <br />

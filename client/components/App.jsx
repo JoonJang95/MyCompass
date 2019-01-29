@@ -18,7 +18,8 @@ class App extends React.Component {
       gpsAccuracy: 30,
       currentSearch: '',
       geoJSONStore: [],
-      currentUser: ''
+      currentUser: '',
+      gotLocation: false
     };
 
     this.getLocation = this.getLocation.bind(this);
@@ -31,15 +32,22 @@ class App extends React.Component {
     this.getLocation();
   }
 
-  getLocation() {
-    console.log('getting current position');
+  setCurrentUser(user) {
+    this.setState({
+      currentUser: user
+    });
+  }
+
+  getLocation(user) {
+    console.log('updating location');
     navigator.geolocation.getCurrentPosition(
       pos => {
         console.log(pos);
         this.setState({
           longitude: pos.coords.longitude,
           latitude: pos.coords.latitude,
-          gpsAccuracy: pos.coords.accuracy
+          gpsAccuracy: pos.coords.accuracy,
+          gotLocation: true
         });
       },
       err => {
@@ -116,12 +124,6 @@ class App extends React.Component {
     this.getNearbyRecommendations(searchValue);
   }
 
-  setCurrentUser(user) {
-    this.setState({
-      currentUser: user
-    });
-  }
-
   render() {
     return (
       <BrowserRouter>
@@ -137,7 +139,10 @@ class App extends React.Component {
                       {...this.state}
                       saveMarkers={this.saveCurrentMarkers}
                     />
-                    <Sidebar searchFunc={this.searchArea} />
+                    <Sidebar
+                      searchFunc={this.searchArea}
+                      currUser={this.state.currentUser}
+                    />
                   </div>
                 );
               } else {
@@ -157,13 +162,7 @@ class App extends React.Component {
           <Route
             exact
             path="/login"
-            render={props => (
-              <Login
-                {...props}
-                setUser={this.setCurrentUser}
-                getLocation={this.getLocation}
-              />
-            )}
+            render={props => <Login {...props} setUser={this.setCurrentUser} />}
           />
           <Route component={Error} />
         </Switch>

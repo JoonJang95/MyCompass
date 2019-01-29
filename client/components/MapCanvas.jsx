@@ -16,8 +16,12 @@ class MapCanvas extends React.Component {
 
   componentDidUpdate(prevProps) {
     console.log('map component updating');
-    console.log(prevProps.currentUser, this.props.currentUser);
-    if (prevProps.currentUser !== this.props.currentUser) {
+    if (
+      prevProps.longitude !== this.props.longitude ||
+      prevProps.latitude !== this.props.latitude ||
+      (prevProps.currentUser !== this.props.currentUser &&
+        this.props.gotLocation)
+    ) {
       console.log('creating new map');
       MapboxGL.accessToken = MB_APIKEY;
       const { longitude, latitude } = this.props;
@@ -37,8 +41,6 @@ class MapCanvas extends React.Component {
       let userLocation = new MapboxGL.Marker(ele)
         .setLngLat([longitude, latitude])
         .addTo(this.map);
-
-      console.log('displaying new Map');
     }
 
     // Add Markers w/ popups
