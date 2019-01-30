@@ -166,7 +166,7 @@ class App extends React.Component {
             render={props => {
               if (auth.isAuthenticated()) {
                 return (
-                  <div className="AppWrapper">
+                  <div className="appWrapper">
                     <MapCanvas
                       {...this.state}
                       saveMarkers={this.saveCurrentMarkers}
