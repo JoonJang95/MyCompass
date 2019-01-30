@@ -157,3 +157,17 @@ body {
 .mapboxgl-popup {
   max-width: 190px;
 }
+
+/* Favorites Section */
+
+.favoritesWrapper {
+  position: absolute;
+  top: 560px;
+  width: 950px;
+  font-family: Helvetica, sans-serif;
+}
+
+.favoritesInfo {
+  font-size: 13px;
+  margin-bottom: 10px;
+}

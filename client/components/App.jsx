@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Login from './Login.jsx';
 import MapCanvas from './MapCanvas.jsx';
 import Sidebar from './Sidebar.jsx';
+import Favorites from './Favorites.jsx';
 import Error from './Error.jsx';
 import auth from './Auth.js';
 import { FourSquareID, FourSquareSecret } from '../../envConfigs.js';
@@ -18,6 +19,7 @@ class App extends React.Component {
       gpsAccuracy: 30,
       currentSearch: '',
       geoJSONStore: [],
+      favoriteSpots: [],
       currentUser: '',
       gotLocation: false
     };
@@ -26,6 +28,10 @@ class App extends React.Component {
     this.getNearbyRecommendations = this.getNearbyRecommendations.bind(this);
     this.searchArea = this.searchArea.bind(this);
     this.setCurrentUser = this.setCurrentUser.bind(this);
+    this.addLocationtoFavorites = this.addLocationtoFavorites.bind(this);
+    this.removeLocationFromFavorites = this.removeLocationFromFavorites.bind(
+      this
+    );
   }
 
   componentDidMount() {
@@ -39,10 +45,8 @@ class App extends React.Component {
   }
 
   getLocation(user) {
-    console.log('updating location');
     navigator.geolocation.getCurrentPosition(
       pos => {
-        console.log(pos);
         this.setState({
           longitude: pos.coords.longitude,
           latitude: pos.coords.latitude,
@@ -75,15 +79,19 @@ class App extends React.Component {
       .then(({ data }) => {
         const { results } = data.response.group;
         const geoJSONStore = [];
-
+        console.log(results);
         results.forEach(result => {
           let photo = 'no photo';
           let text = 'no description';
+          let url = 'URL N/A';
 
+          // Check text is not blank
           if (Object.keys(result.snippets.items[0]).length !== 0) {
             text = result.snippets.items[0].detail.object.text;
+            url = result.snippets.items[0].detail.object.canonicalUrl;
           }
 
+          // Gen Photo URL
           if (result.photo) {
             let prefix = result.photo.prefix;
             let size = `${result.photo.height}x${result.photo.width}`;
@@ -92,23 +100,28 @@ class App extends React.Component {
             photo = `${prefix}${size}${suffix}`;
           }
 
-          geoJSONStore.push({
-            coordinates: [result.venue.location.lng, result.venue.location.lat],
-            name: result.venue.name,
-            text: text,
-            photo: photo
-          });
+          // Check URL not blank
+          if (Object.keys(result.snippets.items[0]))
+            geoJSONStore.push({
+              coordinates: [
+                result.venue.location.lng,
+                result.venue.location.lat
+              ],
+              name: result.venue.name,
+              text: text,
+              photo: photo,
+              address: result.venue.location.address,
+              city: result.venue.location.city,
+              state: result.venue.location.state,
+              zipcode: result.venue.location.postalCode,
+              url: url
+            });
         });
 
-        this.setState(
-          {
-            geoJSONStore: geoJSONStore,
-            currentSearch: searchValue
-          },
-          () => {
-            console.log('obtained nearby data', this.state.geoJSONStore);
-          }
-        );
+        this.setState({
+          geoJSONStore: geoJSONStore,
+          currentSearch: searchValue
+        });
       })
       .catch(err => {
         console.log('error with get nearby recommendations request: ', err);
@@ -117,11 +130,30 @@ class App extends React.Component {
 
   searchArea(e) {
     e.preventDefault();
-
+    console.log('searching');
     const searchValue = e.target.value;
-    console.log('search called with:', searchValue);
 
     this.getNearbyRecommendations(searchValue);
+  }
+
+  addLocationtoFavorites(locationInfo) {
+    this.setState(
+      {
+        favoriteSpots: [...this.state.favoriteSpots, locationInfo]
+      },
+      () => {
+        console.log('worked!', this.state.favoriteSpots);
+      }
+    );
+  }
+
+  removeLocationFromFavorites(locationIndex) {
+    let newFavSpots = [...this.state.favoriteSpots];
+    newFavSpots.splice(locationIndex, 1);
+
+    this.setState({
+      favoriteSpots: newFavSpots
+    });
   }
 
   render() {
@@ -138,10 +170,15 @@ class App extends React.Component {
                     <MapCanvas
                       {...this.state}
                       saveMarkers={this.saveCurrentMarkers}
+                      addFav={this.addLocationtoFavorites}
                     />
                     <Sidebar
                       searchFunc={this.searchArea}
                       currUser={this.state.currentUser}
+                    />
+                    <Favorites
+                      favSpots={this.state.favoriteSpots}
+                      removeSpot={this.removeLocationFromFavorites}
                     />
                   </div>
                 );
