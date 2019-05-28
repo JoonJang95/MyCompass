@@ -35,6 +35,8 @@ class Login extends React.Component {
             break;
           case isValid:
             auth.login(() => {
+              console.log(this);
+              console.log(this.props);
               this.props.history.push('/');
               this.props.setUser(this.state.username);
             });
